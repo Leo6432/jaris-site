@@ -1,11 +1,30 @@
 <!doctype html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Jaris, ton assistant IA sur ton PC</title>
-<meta name="description" content="Jaris est un assistant IA qui tourne directement sur ton ordinateur Windows. Privé, gratuit, sans abonnement, et il agit vraiment sur ton PC.">
+<title>Jaris, your AI assistant on your PC</title>
+<meta name="description" content="Jaris is an AI assistant that runs directly on your Windows computer. Private, free, no subscription, and it actually does things on your PC.">
 <meta name="theme-color" content="#000000">
+<script>
+// Langue : choix enregistré, sinon langue du navigateur si Jaris la parle, sinon anglais.
+(function(){
+  var L=['bg','cs','da','de','el','en','es','et','fi','fr','hr','hu','it','lt','lv','nl','pl','pt','ro','ru','sk','sl','sv','uk'];
+  function ok(c){return L.indexOf(c)>-1;}
+  var c=null;
+  try{var q=new URLSearchParams(location.search).get('lang'); if(ok(q)) c=q;}catch(e){}
+  if(!c){try{var s=localStorage.getItem('jaris-lang'); if(ok(s)) c=s;}catch(e){}}
+  if(!c){
+    var n=navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language||''];
+    for(var i=0;i<n.length&&!c;i++){var p=String(n[i]).toLowerCase().split(/[-_]/)[0]; if(ok(p)) c=p;}
+  }
+  window.JARIS_LANGS=L; window.JARIS_LANG=c||'en';
+  if(window.JARIS_LANG!=='en'){
+    document.documentElement.classList.add('i18n-wait');
+    setTimeout(function(){document.documentElement.classList.remove('i18n-wait');},2500);
+  }
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -31,6 +50,8 @@ h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.05;letter-spac
 p{margin:0}
 :focus-visible{outline:2px solid var(--cyan);outline-offset:3px;border-radius:6px}
 .wrap{width:min(var(--wrap),100% - 2.5rem);margin-inline:auto}
+html.i18n-wait body{visibility:hidden}
+h1,h2,h3,th,td,li,.btn{overflow-wrap:break-word}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
 
 /* Barre du haut */
@@ -42,10 +63,15 @@ p{margin:0}
 .top nav{display:flex;gap:1.5rem}
 .top nav a{text-decoration:none;color:var(--soft);font-size:.95rem}
 .top nav a:hover{color:var(--ink)}
-.btn{display:inline-flex;align-items:center;gap:.7rem;background:var(--cyan);color:#001513;font-weight:600;text-decoration:none;border-radius:999px;padding:1.05rem 1.9rem;font-size:1.1rem;line-height:1;transition:box-shadow .25s,transform .25s}
+.btn{display:inline-flex;align-items:center;gap:.7rem;background:var(--cyan);color:#001513;font-weight:600;text-decoration:none;border-radius:999px;padding:1.05rem 1.9rem;font-size:1.1rem;line-height:1.15;text-align:center;transition:box-shadow .25s,transform .25s}
 .btn:hover{box-shadow:0 0 0 6px rgba(53,243,228,.16),0 0 44px rgba(53,243,228,.45);transform:translateY(-1px)}
 .btn svg{width:1.15em;height:1.15em;flex:none}
-.btn.small{padding:.6rem 1.05rem;font-size:.92rem}
+.btn.small{padding:.6rem 1.05rem;font-size:.92rem;white-space:nowrap}
+.lang{position:relative;display:flex;align-items:center;color:var(--soft)}
+.lang svg{position:absolute;left:.7rem;width:16px;height:16px;pointer-events:none}
+.lang select{appearance:none;-webkit-appearance:none;background:transparent;color:var(--ink);font:inherit;font-size:.92rem;border:1px solid #232d30;border-radius:999px;padding:.5rem .95rem .5rem 2.1rem;cursor:pointer;max-width:11rem}
+.lang select:hover{border-color:#3a4a4e}
+.lang option{background:#0a0e0f;color:#fff}
 
 /* Haut de page */
 .hero{text-align:center;padding:clamp(1.5rem,5vh,3.5rem) 0 clamp(4rem,9vh,6.5rem);position:relative}
@@ -81,7 +107,9 @@ p{margin:0}
 .slot img,.slot video{display:block;width:100%;height:100%;object-fit:cover}
 .video{aspect-ratio:16/9;margin-top:2.5rem}
 .shots{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1rem}
+.shots{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
 .shots .slot{aspect-ratio:16/10}
+.slot[hidden]{display:none}
 
 /* Fonctionnalités alternées */
 .features{padding-bottom:0}
@@ -103,6 +131,7 @@ p{margin:0}
 .widget{background:#000;border:1px solid #1b2224;border-radius:22px;padding:1rem 1.2rem 1.15rem;box-shadow:0 18px 50px rgba(0,0,0,.6);max-width:25rem;width:100%}
 .widget header{display:flex;align-items:center;gap:.6rem;color:#a5adaf;font-weight:600;font-size:.9rem}
 .widget header canvas{width:24px;height:24px}
+.widget header strong{font-weight:600}
 .widget header span{margin-left:auto;display:flex;gap:3px}
 .widget header span b{width:3px;height:3px;background:var(--mint);border-radius:1px}
 .widget p{font-weight:600;margin-top:.6rem;font-size:1.02rem}
@@ -121,7 +150,7 @@ p{margin:0}
 
 .code{gap:.8rem}
 .prompt{border:1px solid var(--line);border-radius:12px;padding:.7rem .9rem;font-size:.92rem;background:#0c1112}
-.prompt::after{content:"";display:inline-block;width:2px;height:1em;background:var(--cyan);vertical-align:-.15em;margin-left:3px;animation:blink 1s steps(2) infinite}
+.prompt span::after{content:"";display:inline-block;width:2px;height:1em;background:var(--cyan);vertical-align:-.15em;margin-left:3px;animation:blink 1s steps(2) infinite}
 @keyframes blink{50%{opacity:0}}
 .preview{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#000}
 .preview header{display:flex;gap:5px;padding:.5rem .7rem;border-bottom:1px solid var(--line);align-items:center;font-size:.78rem;color:var(--muted)}
@@ -139,7 +168,7 @@ p{margin:0}
 .memo{gap:.6rem}
 .note{display:flex;gap:.8rem;align-items:baseline;border-bottom:1px solid var(--line);padding:.7rem .2rem;font-size:.95rem}
 .note:last-child{border:0}
-.note b{color:var(--cyan);font-weight:500;flex:none;width:7.5rem;font-size:.85rem}
+.note b{color:var(--cyan);font-weight:500;flex:0 0 36%;font-size:.85rem;overflow-wrap:anywhere}
 .note span{color:var(--soft)}
 
 .duel{grid-template-columns:1fr auto 1fr;align-items:stretch}
@@ -204,8 +233,10 @@ footer .by{margin-right:auto;color:var(--soft)}
 footer a{text-underline-offset:3px}
 footer a:hover{color:var(--ink)}
 
-@media (max-width:860px){
+@media (max-width:1020px){
   .top nav{display:none}
+}
+@media (max-width:860px){
   .strong .wrap{grid-template-columns:1fr}
   .strong div{padding:1.8rem 0}
   .strong div+div{border-left:0;border-top:1px solid var(--line)}
@@ -220,6 +251,9 @@ footer a:hover{color:var(--ink)}
   thead th{font-size:1.1rem}
 }
 @media (max-width:480px){
+  .top .wrap{gap:.7rem}
+  .brand span{display:none}
+  .lang select{max-width:8.5rem}
   .chat{grid-template-columns:1fr}
   .chat aside{display:none}
   .media{grid-template-columns:1fr}
@@ -237,116 +271,146 @@ footer a:hover{color:var(--ink)}
 
 <header class="top" id="top">
   <div class="wrap">
-    <a class="brand" href="#"><canvas class="mini" aria-hidden="true"></canvas>Jaris</a>
-    <nav aria-label="Sections">
-      <a href="#fonctions">Ce qu’il sait faire</a>
-      <a href="#comparaison">ChatGPT vs Jaris</a>
-      <a href="#faq">Questions</a>
+    <a class="brand" href="#"><canvas class="mini" aria-hidden="true"></canvas><span>Jaris</span></a>
+    <nav>
+      <a href="#fonctions" data-i18n="nav.features">What it can do</a>
+      <a href="#comparaison" data-i18n="nav.compare">ChatGPT vs Jaris</a>
+      <a href="#faq" data-i18n="nav.faq">Questions</a>
     </nav>
-    <a class="btn small" data-dl href="https://github.com/Leo6432/jaris/releases/latest">Télécharger</a>
+    <label class="lang">
+      <span class="sr" data-i18n="nav.lang">Language</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.5 4 5.600 4 9s-1.400 6.500-4 9c-2.600-2.500-4-5.600-4-9s1.400-6.500 4-9z"/></svg>
+      <select id="lang">
+        <option value="bg" lang="bg">Български</option>
+        <option value="cs" lang="cs">Čeština</option>
+        <option value="da" lang="da">Dansk</option>
+        <option value="de" lang="de">Deutsch</option>
+        <option value="el" lang="el">Ελληνικά</option>
+        <option value="en" lang="en" selected>English</option>
+        <option value="es" lang="es">Español</option>
+        <option value="et" lang="et">Eesti</option>
+        <option value="fi" lang="fi">Suomi</option>
+        <option value="fr" lang="fr">Français</option>
+        <option value="hr" lang="hr">Hrvatski</option>
+        <option value="hu" lang="hu">Magyar</option>
+        <option value="it" lang="it">Italiano</option>
+        <option value="lt" lang="lt">Lietuvių</option>
+        <option value="lv" lang="lv">Latviešu</option>
+        <option value="nl" lang="nl">Nederlands</option>
+        <option value="pl" lang="pl">Polski</option>
+        <option value="pt" lang="pt">Português</option>
+        <option value="ro" lang="ro">Română</option>
+        <option value="ru" lang="ru">Русский</option>
+        <option value="sk" lang="sk">Slovenčina</option>
+        <option value="sl" lang="sl">Slovenščina</option>
+        <option value="sv" lang="sv">Svenska</option>
+        <option value="uk" lang="uk">Українська</option>
+      </select>
+    </label>
+    <a class="btn small" data-dl href="https://github.com/Leo6432/jaris/releases/latest" data-i18n="nav.download">Download</a>
   </div>
 </header>
 
 <main>
 <section class="hero">
   <div class="wrap">
-    <canvas id="orb" role="img" aria-label="L’orbe de Jaris : un anneau lumineux turquoise au contour ondulant"></canvas>
+    <canvas id="orb" role="img" data-i18n-aria="hero.orbAlt" aria-label="The Jaris orb: a glowing turquoise ring with a rippling edge"></canvas>
     <h1>Jaris</h1>
-    <p class="tagline">Ton assistant IA. Sur ton PC. Rien que pour toi.</p>
-    <p class="lead">Comme ChatGPT, mais il tourne directement sur ton ordinateur. Tes conversations ne partent nulle part, et il marche même sans Internet.</p>
+    <p class="tagline" data-i18n="hero.tagline">Your AI assistant. On your PC. Just for you.</p>
+    <p class="lead" data-i18n="hero.lead">Like ChatGPT, but it runs directly on your computer. Your conversations go nowhere, and it works even without the Internet.</p>
     <div class="cta">
       <a class="btn" data-dl href="https://github.com/Leo6432/jaris/releases/latest">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.3 10.5 4v7.5H3zM11.5 3.9 21 2.5v9H11.5zM3 12.5h7.5V20L3 18.7zM11.5 12.5H21v9l-9.500-1.4z"/></svg>
-        Télécharger pour Windows
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.3 10.5 4v7.5H3zM11.5 3.9 21 2.5v9H11.5zM3 12.5h7.5V20L3 18.7zM11.5 12.5H21v9l-9.5-1.4z"/></svg>
+        <span data-i18n="hero.cta">Download for Windows</span>
       </a>
-      <p class="under">Gratuit, sans abonnement.<span data-version></span></p>
+      <p class="under"><span data-i18n="hero.under">Free, no subscription.</span> <span data-version></span></p>
     </div>
   </div>
 </section>
 
-<section class="strong" aria-label="Les trois points forts">
+<section class="strong">
   <div class="wrap">
-    <div><h2>Privé</h2><p>Rien ne quitte ton PC. Personne ne lit tes conversations, personne ne revend tes données.</p></div>
-    <div><h2>Gratuit</h2><p>Pas d’abonnement, pas de version payante cachée. Tu télécharges, tu utilises.</p></div>
-    <div><h2>Il agit</h2><p>Il ne fait pas que parler. Tu demandes, il ouvre, il écrit, il cherche, il te rappelle.</p></div>
+    <div><h2 data-i18n="strong.private.t">Private</h2><p data-i18n="strong.private.p">Nothing leaves your PC. Nobody reads your conversations, nobody sells your data.</p></div>
+    <div><h2 data-i18n="strong.free.t">Free</h2><p data-i18n="strong.free.p">No subscription, no hidden paid version. You download it, you use it.</p></div>
+    <div><h2 data-i18n="strong.acts.t">It acts</h2><p data-i18n="strong.acts.p">It doesn't just talk. You ask, and it opens, writes, searches and reminds you.</p></div>
   </div>
 </section>
 
 <section class="block">
   <div class="wrap">
-    <h2>Regarde-le faire</h2>
-    <p class="intro">Une courte démonstration vaut mieux qu’un long discours.</p>
+    <h2 data-i18n="demo.title">Watch it work</h2>
+    <p class="intro" data-i18n="demo.intro">A short demo is worth more than a long speech.</p>
 
     <!-- VIDÉO DE DÉMO : dépose ton fichier dans captures/demo.mp4, il s’affichera tout seul ici. -->
     <div class="slot video" data-video="captures/demo.mp4">
       <div>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M10 8.5v7l6-3.5z" fill="currentColor" stroke="none"/></svg>
-        Emplacement de la vidéo de démonstration
+        <span data-i18n="demo.videoSlot">Demo video goes here</span>
         <code>captures/demo.mp4</code>
       </div>
     </div>
 
     <!-- CAPTURES D’ÉCRAN : dépose tes images sous ces noms dans le dossier captures/. -->
     <div class="shots">
-      <div class="slot" data-shot="captures/vocal.png" data-alt="Jaris en mode vocal, avec son orbe"><div>Capture d’écran<code>captures/vocal.png</code></div></div>
-      <div class="slot" data-shot="captures/chat.png" data-alt="Les conversations écrites dans Jaris"><div>Capture d’écran<code>captures/chat.png</code></div></div>
-      <div class="slot" data-shot="captures/code.png" data-alt="Jaris en train de créer une application"><div>Capture d’écran<code>captures/code.png</code></div></div>
+      <div class="slot" data-shot="captures/vocal.png" data-i18n-alt="demo.alt.voice" data-alt="Jaris in voice mode, with its orb"><div><span data-i18n="demo.shotSlot">Screenshot</span><code>captures/vocal.png</code></div></div>
+      <div class="slot" data-shot="captures/chat.png" data-i18n-alt="demo.alt.chat" data-alt="Written conversations in Jaris"><div><span data-i18n="demo.shotSlot">Screenshot</span><code>captures/chat.png</code></div></div>
+      <div class="slot" data-shot="captures/code.png" data-i18n-alt="demo.alt.code" data-alt="Jaris building an app"><div><span data-i18n="demo.shotSlot">Screenshot</span><code>captures/code.png</code></div></div>
     </div>
   </div>
 </section>
 
 <section class="block features" id="fonctions">
   <div class="wrap">
-    <h2>Ce que Jaris sait faire</h2>
-    <p class="intro">Un seul assistant pour parler, écrire, créer et retenir. Tout se passe sur ta machine.</p>
+    <h2 data-i18n="feat.title">What Jaris can do</h2>
+    <p class="intro" data-i18n="feat.intro">One assistant to talk, write, create and remember. Everything happens on your machine.</p>
 
     <article class="feature">
       <div class="txt">
-        <h3>Tu parles, il fait</h3>
-        <p>Dis « Jaris » ou clique sur l’orbe, puis parle normalement. Il te répond à voix haute et s’occupe de ce que tu demandes sur ton PC.</p>
+        <h3 data-i18n="voice.t">You talk, it does</h3>
+        <p data-i18n="voice.p">Say “Jaris” or click the orb, then just talk. It answers out loud and takes care of what you ask on your PC.</p>
         <ul>
-          <li>Ouvrir une appli</li><li>Écrire un texte</li><li>Mettre un rappel</li><li>Chercher sur le web</li><li>Regarder ton écran</li>
+          <li data-i18n="voice.c1">Open an app</li><li data-i18n="voice.c2">Write a text</li><li data-i18n="voice.c3">Set a reminder</li><li data-i18n="voice.c4">Search the web</li><li data-i18n="voice.c5">Look at your screen</li>
         </ul>
       </div>
       <div class="art" aria-hidden="true">
-        <div class="said"><i><b></b><b></b><b></b><b></b></i>« Jaris, rappelle-moi d’appeler le garage à 17 h »</div>
+        <div class="said"><i><b></b><b></b><b></b><b></b></i><span data-i18n="voice.said">“Jaris, remind me to call the garage at 5 pm”</span></div>
         <div class="widget">
-          <header><canvas class="mini"></canvas>Jaris répond<span><b></b><b></b><b></b><b></b><b></b><b></b></span></header>
-          <p>C’est noté, je te le rappelle à 17 h.</p>
+          <header><canvas class="mini"></canvas><strong data-i18n="voice.header">Jaris is answering</strong><span><b></b><b></b><b></b><b></b><b></b><b></b></span></header>
+          <p data-i18n="voice.reply">Got it, I'll remind you at 5 pm.</p>
         </div>
-        <div class="did"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 8.5 3.2 3L13 4.5"/></svg>Rappel créé</div>
+        <div class="did"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 8.5 3.2 3L13 4.5"/></svg><span data-i18n="voice.done">Reminder created</span></div>
       </div>
     </article>
 
     <article class="feature">
       <div class="txt">
-        <h3>Écris-lui comme à ChatGPT</h3>
-        <p>Pose tes questions par écrit, garde plusieurs conversations en parallèle et retrouve-les plus tard. Si tu connais ChatGPT, tu ne seras pas perdu.</p>
+        <h3 data-i18n="chat.t">Write to it like you would to ChatGPT</h3>
+        <p data-i18n="chat.p">Ask your questions in writing, keep several conversations going and come back to them later. If you know ChatGPT, you'll feel at home.</p>
       </div>
       <div class="art chat" aria-hidden="true">
         <aside>
-          <span class="on">Liste de courses</span>
-          <span>Comparer 3 forfaits mobiles</span>
-          <span>Idées de cadeau</span>
-          <span>Lettre au propriétaire</span>
+          <span class="on" data-i18n="chat.s1">Shopping list</span>
+          <span data-i18n="chat.s2">Compare 3 phone plans</span>
+          <span data-i18n="chat.s3">Gift ideas</span>
+          <span data-i18n="chat.s4">Letter to the landlord</span>
         </aside>
         <div class="msgs">
-          <div class="bub me">Fais-moi une liste de courses pour la semaine</div>
-          <div class="bub j">Voilà une liste par rayon. Tu veux que j’ajoute le petit-déjeuner ?</div>
-          <div class="field">Écris à Jaris…</div>
+          <div class="bub me" data-i18n="chat.me">Make me a shopping list for the week</div>
+          <div class="bub j" data-i18n="chat.j">Here's a list sorted by aisle. Want me to add breakfast?</div>
+          <div class="field" data-i18n="chat.field">Write to Jaris…</div>
         </div>
       </div>
     </article>
 
     <article class="feature">
       <div class="txt">
-        <h3>Il fabrique des petites applis</h3>
-        <p>Décris un jeu ou un outil en une phrase. Jaris le crée et tu l’essaies tout de suite dans un aperçu, juste à côté. Si tu codes déjà, il peut aussi travailler sur un projet GitHub.</p>
+        <h3 data-i18n="code.t">It builds small apps</h3>
+        <p data-i18n="code.p">Describe a game or a tool in one sentence. Jaris builds it and you try it right away in a preview, right next to it. If you already code, it can also work on a GitHub project.</p>
       </div>
       <div class="art code" aria-hidden="true">
-        <div class="prompt">Fais-moi un jeu du serpent</div>
+        <div class="prompt"><span data-i18n="code.prompt">Make me a snake game</span></div>
         <div class="preview">
-          <header><b></b><b></b><b></b><em>Aperçu</em></header>
+          <header><b></b><b></b><b></b><em data-i18n="code.preview">Preview</em></header>
           <svg viewBox="0 0 320 150">
             <g stroke="#0e1517" stroke-width="1"><path d="M0 30h320M0 60h320M0 90h320M0 120h320M40 0v150M80 0v150M120 0v150M160 0v150M200 0v150M240 0v150M280 0v150"/></g>
             <path d="M52 105h78V45h70" fill="none" stroke="#35f3e4" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
@@ -359,8 +423,8 @@ footer a:hover{color:var(--ink)}
 
     <article class="feature">
       <div class="txt">
-        <h3>Des images et des vidéos, faites chez toi</h3>
-        <p>Décris ce que tu veux voir : Jaris génère l’image, ou une courte vidéo. Là encore, tout est fabriqué par ton PC, rien n’est envoyé ailleurs.</p>
+        <h3 data-i18n="media.t">Images and videos, made at home</h3>
+        <p data-i18n="media.p">Describe what you want to see: Jaris generates the image, or a short video. Here too, everything is made by your PC and nothing is sent anywhere.</p>
       </div>
       <div class="art media" aria-hidden="true">
         <div class="frame">
@@ -370,7 +434,7 @@ footer a:hover{color:var(--ink)}
             <path d="M0 100 50 62l34 24 36-34 80 58v30H0z" fill="#0b4a4d"/>
             <path d="M0 118 60 92l50 22 40-14 50 20v20H0z" fill="#06292b"/>
           </svg>
-          <small>Image</small>
+          <small data-i18n="media.image">Image</small>
         </div>
         <div class="frame">
           <svg viewBox="0 0 160 140">
@@ -378,7 +442,7 @@ footer a:hover{color:var(--ink)}
             <circle cx="80" cy="64" r="24" fill="none" stroke="#35f3e4" stroke-width="2"/>
             <path d="M73 52v24l20-12z" fill="#35f3e4"/>
           </svg>
-          <small>Vidéo</small>
+          <small data-i18n="media.video">Video</small>
           <div class="bar"></div>
         </div>
       </div>
@@ -386,42 +450,42 @@ footer a:hover{color:var(--ink)}
 
     <article class="feature">
       <div class="txt">
-        <h3>Il se souvient de toi</h3>
-        <p>Jaris a une mémoire, qu’il appelle son Cerveau. Dis-lui une fois l’anniversaire de ta sœur ou comment tu aimes ton café : il s’en souviendra la prochaine fois.</p>
+        <h3 data-i18n="mem.t">It remembers you</h3>
+        <p data-i18n="mem.p">Jaris has a memory, which it calls its Brain. Tell it once when your sister's birthday is or how you like your coffee: it will remember next time.</p>
       </div>
       <div class="art memo" aria-hidden="true">
-        <div class="note"><b>Anniversaire</b><span>Camille, le 14 mars</span></div>
-        <div class="note"><b>Préférence</b><span>Réponses courtes, sans blabla</span></div>
-        <div class="note"><b>Habitude</b><span>Sport le mardi et le jeudi soir</span></div>
-        <div class="note"><b>Allergie</b><span>Pas de noix dans les recettes</span></div>
+        <div class="note"><b data-i18n="mem.k1">Birthday</b><span data-i18n="mem.v1">Camille, March 14</span></div>
+        <div class="note"><b data-i18n="mem.k2">Preference</b><span data-i18n="mem.v2">Short answers, no fluff</span></div>
+        <div class="note"><b data-i18n="mem.k3">Habit</b><span data-i18n="mem.v3">Sport on Tuesday and Thursday evenings</span></div>
+        <div class="note"><b data-i18n="mem.k4">Allergy</b><span data-i18n="mem.v4">No nuts in recipes</span></div>
       </div>
     </article>
 
     <article class="feature">
       <div class="txt">
-        <h3>Il choisit les meilleures IA pour ta machine</h3>
-        <p>Avec les Duels, deux modèles d’IA répondent à la même question sans que tu saches lequel est lequel. Tu votes pour ta réponse préférée, et Jaris garde les gagnants.</p>
+        <h3 data-i18n="duel.t">It picks the best AIs for your machine</h3>
+        <p data-i18n="duel.p">With Duels, two AI models answer the same question without you knowing which is which. You vote for the answer you prefer, and Jaris keeps the winners.</p>
       </div>
       <div class="art duel" aria-hidden="true">
-        <div class="card win"><strong>Réponse A</strong><i></i><i></i><i></i><span>Ton vote</span></div>
-        <div class="vs">contre</div>
-        <div class="card"><strong>Réponse B</strong><i></i><i></i><i></i><span>Voter</span></div>
+        <div class="card win"><strong data-i18n="duel.a">Answer A</strong><i></i><i></i><i></i><span data-i18n="duel.voted">Your vote</span></div>
+        <div class="vs" data-i18n="duel.vs">vs</div>
+        <div class="card"><strong data-i18n="duel.b">Answer B</strong><i></i><i></i><i></i><span data-i18n="duel.vote">Vote</span></div>
       </div>
     </article>
 
     <article class="feature">
       <div class="txt">
-        <h3>Sur ton téléphone, et toujours sous la main</h3>
-        <p>Tu peux parler à Jaris depuis ton téléphone, même loin de ton PC. Et sur ton bureau, un petit widget flottant reste à portée de clic pendant que tu fais autre chose.</p>
+        <h3 data-i18n="away.t">On your phone, and always within reach</h3>
+        <p data-i18n="away.p">You can talk to Jaris from your phone, even far from your PC. And on your desktop, a small floating widget stays one click away while you do something else.</p>
       </div>
       <div class="art away" aria-hidden="true">
         <div class="phone"><canvas class="mini"></canvas></div>
         <div class="col">
           <div class="widget">
-            <header><canvas class="mini"></canvas>Jaris répond<span><b></b><b></b><b></b><b></b><b></b><b></b></span></header>
-            <p>Je t’écoute.</p>
+            <header><canvas class="mini"></canvas><strong data-i18n="voice.header">Jaris is answering</strong><span><b></b><b></b><b></b><b></b><b></b><b></b></span></header>
+            <p data-i18n="away.listen">I'm listening.</p>
           </div>
-          <p class="cap">Le widget flottant, par-dessus tes autres fenêtres.</p>
+          <p class="cap" data-i18n="away.cap">The floating widget, on top of your other windows.</p>
         </div>
       </div>
     </article>
@@ -429,8 +493,8 @@ footer a:hover{color:var(--ink)}
     <div class="langs">
       <div class="num" aria-hidden="true">24</div>
       <div>
-        <h3>Disponible en 24 langues</h3>
-        <p>Jaris est en français, et dans 23 autres langues. Pratique pour le partager avec quelqu’un qui ne parle pas la tienne.</p>
+        <h3 data-i18n="langs.t">Available in 24 languages</h3>
+        <p data-i18n="langs.p">Jaris speaks your language, and 23 others. Handy for sharing it with someone who doesn't speak yours.</p>
       </div>
     </div>
   </div>
@@ -438,56 +502,41 @@ footer a:hover{color:var(--ink)}
 
 <section class="block compare" id="comparaison">
   <div class="wrap">
-    <h2>ChatGPT ou Jaris ?</h2>
-    <p class="intro">Les deux discutent avec toi. La différence, c’est l’endroit où ça se passe.</p>
+    <h2 data-i18n="cmp.t">ChatGPT or Jaris?</h2>
+    <p class="intro" data-i18n="cmp.intro">Both chat with you. The difference is where it happens.</p>
     <table>
-      <thead><tr><th><span class="sr">Critère</span></th><th scope="col">ChatGPT</th><th scope="col" class="j">Jaris</th></tr></thead>
+      <thead><tr><th><span class="sr" data-i18n="cmp.criterion">Criterion</span></th><th scope="col">ChatGPT</th><th scope="col" class="j">Jaris</th></tr></thead>
       <tbody>
-        <tr><th scope="row">Où vont tes données</th><td>Sur les serveurs d’une entreprise, via Internet</td><td class="j"><strong>Nulle part.</strong> Elles restent sur ton PC</td></tr>
-        <tr><th scope="row">Prix</th><td>Version gratuite limitée, abonnement pour le reste</td><td class="j"><strong>Gratuit</strong>, sans abonnement</td></tr>
-        <tr><th scope="row">Sans Internet</th><td>Ne fonctionne pas</td><td class="j"><strong>Fonctionne</strong>, même hors ligne</td></tr>
-        <tr><th scope="row">Agit sur ton PC</th><td>Reste surtout dans sa fenêtre</td><td class="j"><strong>Oui</strong> : applis, textes, rappels, écran</td></tr>
+        <tr><th scope="row" data-i18n="cmp.r1">Where your data goes</th><td data-i18n="cmp.c1">To a company's servers, over the Internet</td><td class="j" data-i18n="cmp.j1"><strong>Nowhere.</strong> It stays on your PC</td></tr>
+        <tr><th scope="row" data-i18n="cmp.r2">Price</th><td data-i18n="cmp.c2">Limited free version, subscription for the rest</td><td class="j" data-i18n="cmp.j2"><strong>Free</strong>, no subscription</td></tr>
+        <tr><th scope="row" data-i18n="cmp.r3">Without the Internet</th><td data-i18n="cmp.c3">Doesn't work</td><td class="j" data-i18n="cmp.j3"><strong>Works</strong>, even offline</td></tr>
+        <tr><th scope="row" data-i18n="cmp.r4">Acts on your PC</th><td data-i18n="cmp.c4">Mostly stays in its window</td><td class="j" data-i18n="cmp.j4"><strong>Yes</strong>: apps, texts, reminders, screen</td></tr>
       </tbody>
     </table>
-    <p class="fine">Pour être honnête : un PC ne remplace pas un centre de données. Sur les questions très pointues, ChatGPT peut être plus fort et plus rapide. Jaris, lui, t’appartient.</p>
+    <p class="fine" data-i18n="cmp.fine">To be honest: a PC is no match for a data center. On very advanced questions, ChatGPT can be stronger and faster. Jaris, though, belongs to you.</p>
   </div>
 </section>
 
 <section class="block setup">
   <div class="wrap">
-    <h2>Ce qu’il te faut</h2>
+    <h2 data-i18n="setup.t">What you need</h2>
     <div class="cols">
-      <div><h3>Un PC sous Windows</h3><p>Jaris est une application Windows. Tu lances l’installateur et c’est parti.</p></div>
-      <div><h3>Une carte graphique NVIDIA, si possible</h3><p>Ce n’est pas obligatoire, mais c’est recommandé : Jaris répond plus vite et peut faire tourner de meilleurs modèles.</p></div>
-      <div><h3>Rien à régler</h3><p>Au premier démarrage, Jaris installe ce dont il a besoin et choisit tout seul les modèles adaptés à ta machine.</p></div>
+      <div><h3 data-i18n="setup.1t">A Windows PC</h3><p data-i18n="setup.1p">Jaris is a Windows app. You run the installer and off you go.</p></div>
+      <div><h3 data-i18n="setup.2t">An NVIDIA graphics card, if possible</h3><p data-i18n="setup.2p">It's not required, but it's recommended: Jaris answers faster and can run better models.</p></div>
+      <div><h3 data-i18n="setup.3t">Nothing to configure</h3><p data-i18n="setup.3p">On first launch, Jaris installs what it needs and picks the models that suit your machine by itself.</p></div>
     </div>
   </div>
 </section>
 
 <section class="block faq" id="faq">
   <div class="wrap">
-    <h2>Les questions qu’on me pose</h2>
+    <h2 data-i18n="faq.t">Questions people ask me</h2>
     <div>
-      <details open>
-        <summary>C’est vraiment gratuit ?</summary>
-        <p>Oui. Pas d’abonnement, pas de crédits à acheter. L’IA tourne sur ton ordinateur, donc elle ne me coûte rien à faire fonctionner pour toi.</p>
-      </details>
-      <details>
-        <summary>Mes données sont-elles envoyées quelque part ?</summary>
-        <p>Non. Tes conversations, ta voix et la mémoire de Jaris restent sur ton PC. Jaris ne va sur Internet que quand tu le lui demandes, par exemple pour une recherche sur le web.</p>
-      </details>
-      <details>
-        <summary>Il faut un gros PC ?</summary>
-        <p>Pas forcément. Jaris regarde ta machine et choisit des modèles qui lui conviennent. Avec une carte graphique NVIDIA, il sera plus rapide et plus malin. Sans, il fonctionne quand même, plus lentement.</p>
-      </details>
-      <details>
-        <summary>Ça marche sans Internet ?</summary>
-        <p>Oui, une fois installé. Il te faut une connexion pour le télécharger et pour le premier démarrage, le temps qu’il récupère ses modèles. Ensuite, seules les fonctions qui ont besoin du web (la recherche, l’accès depuis le téléphone) demandent une connexion.</p>
-      </details>
-      <details>
-        <summary>Qui est derrière Jaris ?</summary>
-        <p>Moi, Léo. Je développe Jaris seul depuis cinq mois, parce que je voulais un assistant qui m’appartienne vraiment.</p>
-      </details>
+      <details open><summary data-i18n="faq.q1">Is it really free?</summary><p data-i18n="faq.a1">Yes. No subscription, no credits to buy. The AI runs on your computer, so it costs me nothing to keep it running for you.</p></details>
+      <details><summary data-i18n="faq.q2">Is my data sent anywhere?</summary><p data-i18n="faq.a2">No. Your conversations, your voice and Jaris's memory stay on your PC. Jaris only goes online when you ask it to, for example for a web search.</p></details>
+      <details><summary data-i18n="faq.q3">Do I need a powerful PC?</summary><p data-i18n="faq.a3">Not necessarily. Jaris looks at your machine and picks models that suit it. With an NVIDIA graphics card, it will be faster and smarter. Without one, it still works, just more slowly.</p></details>
+      <details><summary data-i18n="faq.q4">Does it work without the Internet?</summary><p data-i18n="faq.a4">Yes, once it's installed. You need a connection to download it and for the first launch, while it fetches its models. After that, only the features that need the web (search, access from your phone) require a connection.</p></details>
+      <details><summary data-i18n="faq.q5">Who is behind Jaris?</summary><p data-i18n="faq.a5">Me, Léo. I've been building Jaris on my own for five months, because I wanted an assistant that truly belongs to me.</p></details>
     </div>
   </div>
 </section>
@@ -495,10 +544,10 @@ footer a:hover{color:var(--ink)}
 <section class="end">
   <div class="wrap">
     <canvas class="mini" aria-hidden="true"></canvas>
-    <h2>Essaie Jaris sur ton PC</h2>
+    <h2 data-i18n="end.t">Try Jaris on your PC</h2>
     <a class="btn" data-dl href="https://github.com/Leo6432/jaris/releases/latest">
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.3 10.5 4v7.5H3zM11.5 3.9 21 2.5v9H11.5zM3 12.5h7.5V20L3 18.7zM11.5 12.5H21v9l-9.5-1.4z"/></svg>
-      Télécharger pour Windows
+      <span data-i18n="hero.cta">Download for Windows</span>
     </a>
   </div>
 </section>
@@ -506,9 +555,9 @@ footer a:hover{color:var(--ink)}
 
 <footer>
   <div class="wrap">
-    <span class="by">Fait par Léo</span>
-    <a data-dl href="https://github.com/Leo6432/jaris/releases/latest">Télécharger pour Windows</a>
-    <a href="https://github.com/Leo6432/jaris">Voir sur GitHub</a>
+    <span class="by" data-i18n="foot.by">Made by Léo</span>
+    <a data-dl href="https://github.com/Leo6432/jaris/releases/latest" data-i18n="hero.cta">Download for Windows</a>
+    <a href="https://github.com/Leo6432/jaris" data-i18n="foot.github">View on GitHub</a>
   </div>
 </footer>
 
@@ -588,6 +637,8 @@ footer a:hover{color:var(--ink)}
   document.querySelectorAll('[data-shot]').forEach(function(el){
     var img=new Image();
     img.onload=function(){el.innerHTML='';el.appendChild(img);el.classList.add('filled');};
+    // Tant que le fichier n'existe pas, l'emplacement reste caché pour les visiteurs.
+    img.onerror=function(){el.hidden=true;};
     img.alt=el.dataset.alt||''; img.loading='lazy'; img.src=el.dataset.shot;
   });
   document.querySelectorAll('[data-video]').forEach(function(el){
@@ -597,6 +648,50 @@ footer a:hover{color:var(--ink)}
     v.src=el.dataset.video;
   });
 
+  // Traductions : l'anglais est dans la page, les autres langues sont dans lang/<code>.json.
+  var EN={'hero.version':'Version {v}.'}, cur=EN, version=null;
+  var nodes=[].slice.call(document.querySelectorAll('[data-i18n]'));
+  var arias=[].slice.call(document.querySelectorAll('[data-i18n-aria]'));
+  var alts=[].slice.call(document.querySelectorAll('[data-i18n-alt]'));
+  var metaDesc=document.querySelector('meta[name="description"]');
+  var select=document.getElementById('lang');
+  nodes.forEach(function(el){EN[el.dataset.i18n]=el.innerHTML;});
+  arias.forEach(function(el){EN[el.dataset.i18nAria]=el.getAttribute('aria-label');});
+  alts.forEach(function(el){EN[el.dataset.i18nAlt]=el.dataset.alt;});
+  EN['meta.title']=document.title; EN['meta.desc']=metaDesc.content;
+  function t(k){return cur[k]!=null?cur[k]:EN[k];}
+  function showVersion(){
+    var v=document.querySelector('[data-version]');
+    if(v) v.textContent=version?t('hero.version').replace('{v}',version):'';
+  }
+  function apply(code,dict){
+    cur=dict||EN;
+    nodes.forEach(function(el){el.innerHTML=t(el.dataset.i18n);});
+    arias.forEach(function(el){el.setAttribute('aria-label',t(el.dataset.i18nAria));});
+    alts.forEach(function(el){
+      el.dataset.alt=t(el.dataset.i18nAlt);
+      var img=el.querySelector('img'); if(img) img.alt=el.dataset.alt;
+    });
+    document.title=t('meta.title'); metaDesc.content=t('meta.desc');
+    document.documentElement.lang=code;
+    select.value=code;
+    showVersion();
+    document.documentElement.classList.remove('i18n-wait');
+  }
+  function setLang(code){
+    if(code==='en'){apply('en',EN);return;}
+    fetch('lang/'+code+'.json')
+      .then(function(r){if(!r.ok) throw 0; return r.json();})
+      .then(function(d){apply(code,d);})
+      .catch(function(){apply('en',EN);});
+  }
+  select.addEventListener('change',function(){
+    try{localStorage.setItem('jaris-lang',select.value);}catch(e){}
+    setLang(select.value);
+  });
+  select.value=window.JARIS_LANG||'en';
+  if(select.value!=='en') setLang(select.value);
+
   // Lien direct vers le dernier installateur publié sur GitHub (sinon, la page des versions).
   fetch('https://api.github.com/repos/Leo6432/jaris/releases/latest')
     .then(function(r){return r.ok?r.json():null;})
@@ -604,8 +699,7 @@ footer a:hover{color:var(--ink)}
       if(!rel) return;
       var exe=(rel.assets||[]).filter(function(a){return /\.exe$/i.test(a.name);})[0];
       if(exe) document.querySelectorAll('[data-dl]').forEach(function(a){a.href=exe.browser_download_url;});
-      var v=document.querySelector('[data-version]');
-      if(v&&rel.tag_name) v.textContent=' Version '+rel.tag_name.replace(/^v/,'')+'.';
+      if(rel.tag_name){version=rel.tag_name.replace(/^v/,''); showVersion();}
     }).catch(function(){});
 })();
 </script>
