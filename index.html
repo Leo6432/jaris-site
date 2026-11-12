@@ -108,7 +108,7 @@ h1,h2,h3,th,td,li,.btn{overflow-wrap:break-word}
 .video{aspect-ratio:16/9;margin-top:2.5rem}
 .shots{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1rem}
 .shots{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
-.shots .slot{aspect-ratio:16/10}
+.shots .slot{aspect-ratio:2000/1086}
 .slot[hidden]{display:none}
 
 /* Fonctionnalités alternées */
@@ -352,9 +352,9 @@ footer a:hover{color:var(--ink)}
 
     <!-- CAPTURES D’ÉCRAN : dépose tes images sous ces noms dans le dossier captures/. -->
     <div class="shots">
-      <div class="slot" data-shot="captures/vocal.png" data-i18n-alt="demo.alt.voice" data-alt="Jaris in voice mode, with its orb"><div><span data-i18n="demo.shotSlot">Screenshot</span><code>captures/vocal.png</code></div></div>
-      <div class="slot" data-shot="captures/chat.png" data-i18n-alt="demo.alt.chat" data-alt="Written conversations in Jaris"><div><span data-i18n="demo.shotSlot">Screenshot</span><code>captures/chat.png</code></div></div>
-      <div class="slot" data-shot="captures/code.png" data-i18n-alt="demo.alt.code" data-alt="Jaris building an app"><div><span data-i18n="demo.shotSlot">Screenshot</span><code>captures/code.png</code></div></div>
+      <div class="slot" data-shot="captures/vocal.webp" data-i18n-alt="demo.alt.voice" data-alt="Jaris in voice mode, with its orb"><div><span data-i18n="demo.shotSlot">Screenshot</span><code>captures/vocal.webp</code></div></div>
+      <div class="slot" data-shot="captures/image.webp" data-i18n-alt="media.image" data-alt="Image"><div><span data-i18n="demo.shotSlot">Screenshot</span><code>captures/image.webp</code></div></div>
+      <div class="slot" data-shot="captures/video.webp" data-i18n-alt="media.video" data-alt="Video"><div><span data-i18n="demo.shotSlot">Screenshot</span><code>captures/video.webp</code></div></div>
     </div>
   </div>
 </section>
@@ -636,10 +636,14 @@ footer a:hover{color:var(--ink)}
   // Captures et vidéo : si le fichier existe, il remplace l'emplacement vide.
   document.querySelectorAll('[data-shot]').forEach(function(el){
     var img=new Image();
-    img.onload=function(){el.innerHTML='';el.appendChild(img);el.classList.add('filled');};
+    img.onload=function(){
+      el.innerHTML='';el.appendChild(img);el.classList.add('filled');
+      el.style.cursor='zoom-in';
+      el.onclick=function(){window.open(el.dataset.shot,'_blank','noopener');};
+    };
     // Tant que le fichier n'existe pas, l'emplacement reste caché pour les visiteurs.
     img.onerror=function(){el.hidden=true;};
-    img.alt=el.dataset.alt||''; img.loading='lazy'; img.src=el.dataset.shot;
+    img.alt=el.dataset.alt||''; img.src=el.dataset.shot;
   });
   document.querySelectorAll('[data-video]').forEach(function(el){
     var v=document.createElement('video');
