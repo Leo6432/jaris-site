@@ -682,6 +682,17 @@ footer a:hover{color:var(--ink)}
     try{localStorage.setItem('jaris-lang',select.value);}catch(e){}
     setLang(select.value);
   });
+  // Sous Windows, les boutons ouvrent directement l'appli Microsoft Store sur la fiche de Jaris.
+  // Ailleurs (téléphone, Mac), le lien normal mène à la page web du Store.
+  if(/Windows/i.test(navigator.userAgent)){
+    document.querySelectorAll('[data-dl]').forEach(function(a){
+      a.addEventListener('click',function(e){
+        e.preventDefault();
+        location.href='ms-windows-store://pdp/?ProductId=9MW4KQRBLSPD';
+      });
+    });
+  }
+
   select.value=window.JARIS_LANG||'en';
   if(select.value!=='en') setLang(select.value);
 })();
