@@ -688,6 +688,17 @@ footer a:hover{color:var(--ink)}
     document.querySelectorAll('[data-dl]').forEach(function(a){
       a.addEventListener('click',function(e){
         e.preventDefault();
+        // Si l'appli Store ne s'ouvre pas (la page garde le focus), on ouvre la page web du Store.
+        var web=a.href, opened=false;
+        function seen(){opened=true;}
+        function hidden(){if(document.hidden) opened=true;}
+        addEventListener('blur',seen);
+        document.addEventListener('visibilitychange',hidden);
+        setTimeout(function(){
+          removeEventListener('blur',seen);
+          document.removeEventListener('visibilitychange',hidden);
+          if(!opened) location.href=web;
+        },1800);
         location.href='ms-windows-store://pdp/?ProductId=9MW4KQRBLSPD';
       });
     });
