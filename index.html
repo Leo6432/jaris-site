@@ -109,7 +109,8 @@ h1,h2,h3,th,td,li,.btn{overflow-wrap:break-word}
 .slot{position:relative;border:1.5px dashed #24474a;border-radius:18px;background:var(--panel);display:grid;place-items:center;text-align:center;color:var(--muted);overflow:hidden;font-size:.92rem;padding:1rem}
 .slot code{display:block;margin-top:.35rem;color:var(--cyan);font-family:ui-monospace,Consolas,monospace;font-size:.85rem}
 .slot svg{width:34px;height:34px;margin:0 auto .7rem;display:block;color:#3b6f72}
-.slot.filled{border:1px solid var(--line);padding:0}
+.slot.filled{border:1px solid var(--line);padding:0;display:block;cursor:zoom-in}
+.slot.video.filled{cursor:auto;background:#000}
 .slot img,.slot video{display:block;width:100%;height:100%;object-fit:cover}
 .video{aspect-ratio:16/9;margin-top:2.5rem}
 .shots{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1rem}
@@ -317,7 +318,7 @@ footer a:hover{color:var(--ink)}
     </label>
     <a class="gh" href="https://discord.gg/dVAQV7eJtr" target="_blank" rel="noopener" aria-label="Discord" title="Discord"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189z"/></svg></a>
     <a class="gh" href="https://github.com/Leo6432/jaris" aria-label="GitHub" title="GitHub"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.500 11.500 0 0 0-3.640 22.410c.580.100.790-.250.790-.550v-2.150c-3.200.700-3.880-1.360-3.880-1.360-.520-1.330-1.280-1.690-1.280-1.690-1.050-.710.080-.700.080-.700 1.160.080 1.770 1.190 1.770 1.190 1.030 1.760 2.700 1.250 3.360.960.100-.750.400-1.250.730-1.540-2.550-.290-5.240-1.280-5.240-5.680 0-1.260.450-2.280 1.190-3.090-.120-.290-.520-1.460.110-3.050 0 0 .970-.310 3.170 1.180a11 11 0 0 1 5.780 0c2.200-1.490 3.170-1.180 3.170-1.180.630 1.590.230 2.760.110 3.050.740.810 1.190 1.830 1.190 3.090 0 4.410-2.690 5.380-5.250 5.670.410.360.780 1.060.780 2.140v3.170c0 .310.210.660.800.550A11.500 11.500 0 0 0 12 .5z"/></svg></a>
-    <a class="btn small" data-dl href="https://github.com/Leo6432/jaris/releases/latest" data-i18n="nav.download">Download</a>
+    <a class="btn small" data-dl href="https://apps.microsoft.com/detail/9mw4kqrblspd" target="_blank" rel="noopener" data-i18n="nav.download">Download</a>
   </div>
 </header>
 
@@ -329,11 +330,11 @@ footer a:hover{color:var(--ink)}
     <p class="tagline" data-i18n="hero.tagline">Your AI assistant. On your PC. Just for you.</p>
     <p class="lead" data-i18n="hero.lead">Like ChatGPT, but it runs directly on your computer. Your conversations go nowhere, and it works even without the Internet.</p>
     <div class="cta">
-      <a class="btn" data-dl href="https://github.com/Leo6432/jaris/releases/latest">
+      <a class="btn" data-dl href="https://apps.microsoft.com/detail/9mw4kqrblspd" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.3 10.5 4v7.5H3zM11.5 3.9 21 2.5v9H11.5zM3 12.5h7.5V20L3 18.7zM11.5 12.5H21v9l-9.5-1.4z"/></svg>
         <span data-i18n="hero.cta">Download for Windows</span>
       </a>
-      <p class="under"><span data-i18n="hero.under">Free, no subscription.</span> <span data-version></span></p>
+      <p class="under"><span data-i18n="hero.under">Free, no subscription.</span> <span>Microsoft Store.</span></p>
     </div>
   </div>
 </section>
@@ -351,20 +352,16 @@ footer a:hover{color:var(--ink)}
     <h2 data-i18n="demo.title">Watch it work</h2>
     <p class="intro" data-i18n="demo.intro">A short demo is worth more than a long speech.</p>
 
-    <!-- VIDÉO DE DÉMO : dépose ton fichier dans captures/demo.mp4, il s’affichera tout seul ici. -->
-    <div class="slot video" data-video="captures/demo.mp4">
-      <div>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M10 8.5v7l6-3.5z" fill="currentColor" stroke="none"/></svg>
-        <span data-i18n="demo.videoSlot">Demo video goes here</span>
-        <code>captures/demo.mp4</code>
-      </div>
+    <!-- Vidéo de démonstration : remplace captures/demo.mp4 pour la changer. -->
+    <div class="slot video filled">
+      <video controls playsinline preload="metadata" poster="captures/vocal.webp" src="captures/demo.mp4"></video>
     </div>
 
-    <!-- CAPTURES D’ÉCRAN : dépose tes images sous ces noms dans le dossier captures/. -->
+    <!-- Captures d'écran : un clic ouvre l'image entière. -->
     <div class="shots">
-      <div class="slot crop" data-shot="captures/vocal.webp" style="--x:-77.75%;--y:-80.65%" data-i18n-alt="demo.alt.voice" data-alt="Jaris in voice mode, with its orb"><div><span data-i18n="demo.shotSlot">Screenshot</span><code>captures/vocal.webp</code></div></div>
-      <div class="slot crop" data-shot="captures/image.webp" style="--x:-90.62%;--y:-84.79%" data-i18n-alt="media.image" data-alt="Image"><div><span data-i18n="demo.shotSlot">Screenshot</span><code>captures/image.webp</code></div></div>
-      <div class="slot crop" data-shot="captures/video.webp" style="--x:-90.62%;--y:-84.56%" data-i18n-alt="media.video" data-alt="Video"><div><span data-i18n="demo.shotSlot">Screenshot</span><code>captures/video.webp</code></div></div>
+      <a class="slot crop filled" href="captures/vocal.webp" target="_blank" rel="noopener" style="--x:-77.75%;--y:-80.65%" data-i18n-alt="demo.alt.voice" data-alt="Jaris in voice mode, with its orb"><img src="captures/vocal.webp" alt="Jaris in voice mode, with its orb" loading="lazy"></a>
+      <a class="slot crop filled" href="captures/image.webp" target="_blank" rel="noopener" style="--x:-90.62%;--y:-84.79%" data-i18n-alt="media.image" data-alt="Image"><img src="captures/image.webp" alt="Image" loading="lazy"></a>
+      <a class="slot crop filled" href="captures/video.webp" target="_blank" rel="noopener" style="--x:-90.62%;--y:-84.56%" data-i18n-alt="media.video" data-alt="Video"><img src="captures/video.webp" alt="Video" loading="lazy"></a>
     </div>
   </div>
 </section>
@@ -555,7 +552,7 @@ footer a:hover{color:var(--ink)}
   <div class="wrap">
     <canvas class="mini" aria-hidden="true"></canvas>
     <h2 data-i18n="end.t">Try Jaris on your PC</h2>
-    <a class="btn" data-dl href="https://github.com/Leo6432/jaris/releases/latest">
+    <a class="btn" data-dl href="https://apps.microsoft.com/detail/9mw4kqrblspd" target="_blank" rel="noopener">
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.3 10.5 4v7.5H3zM11.5 3.9 21 2.5v9H11.5zM3 12.5h7.5V20L3 18.7zM11.5 12.5H21v9l-9.5-1.4z"/></svg>
       <span data-i18n="hero.cta">Download for Windows</span>
     </a>
@@ -566,7 +563,7 @@ footer a:hover{color:var(--ink)}
 <footer>
   <div class="wrap">
     <span class="by" data-i18n="foot.by">Made by Léo</span>
-    <a data-dl href="https://github.com/Leo6432/jaris/releases/latest" data-i18n="hero.cta">Download for Windows</a>
+    <a data-dl href="https://apps.microsoft.com/detail/9mw4kqrblspd" target="_blank" rel="noopener" data-i18n="hero.cta">Download for Windows</a>
     <a class="ghlink" href="https://discord.gg/dVAQV7eJtr" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189z"/></svg><span data-i18n="nav.support">Support</span></a>
     <a class="ghlink" href="https://github.com/Leo6432/jaris"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.500 11.500 0 0 0-3.640 22.410c.580.100.790-.250.790-.550v-2.150c-3.200.700-3.880-1.360-3.880-1.360-.520-1.330-1.280-1.690-1.280-1.690-1.050-.710.080-.700.080-.700 1.160.080 1.770 1.190 1.770 1.190 1.030 1.760 2.700 1.250 3.360.960.100-.750.400-1.250.730-1.540-2.550-.290-5.240-1.280-5.240-5.680 0-1.260.450-2.280 1.190-3.090-.120-.290-.520-1.460.110-3.050 0 0 .970-.310 3.170 1.180a11 11 0 0 1 5.780 0c2.200-1.490 3.170-1.180 3.170-1.180.630 1.590.230 2.760.110 3.050.740.810 1.190 1.830 1.190 3.090 0 4.410-2.690 5.380-5.250 5.670.410.360.780 1.060.780 2.140v3.170c0 .310.210.660.800.550A11.500 11.500 0 0 0 12 .5z"/></svg><span data-i18n="foot.github">View on GitHub</span></a>
   </div>
@@ -644,25 +641,6 @@ footer a:hover{color:var(--ink)}
   var top=document.getElementById('top');
   addEventListener('scroll',function(){top.classList.toggle('scrolled',scrollY>8);},{passive:true});
 
-  // Captures et vidéo : si le fichier existe, il remplace l'emplacement vide.
-  document.querySelectorAll('[data-shot]').forEach(function(el){
-    var img=new Image();
-    img.onload=function(){
-      el.innerHTML='';el.appendChild(img);el.classList.add('filled');
-      el.style.cursor='zoom-in';
-      el.onclick=function(){window.open(el.dataset.shot,'_blank','noopener');};
-    };
-    // Tant que le fichier n'existe pas, l'emplacement reste caché pour les visiteurs.
-    img.onerror=function(){el.hidden=true;};
-    img.alt=el.dataset.alt||''; img.src=el.dataset.shot;
-  });
-  document.querySelectorAll('[data-video]').forEach(function(el){
-    var v=document.createElement('video');
-    v.controls=true; v.preload='metadata'; v.playsInline=true;
-    v.onloadedmetadata=function(){el.innerHTML='';el.appendChild(v);el.classList.add('filled');};
-    v.src=el.dataset.video;
-  });
-
   // Traductions : l'anglais est dans la page, les autres langues sont dans lang/<code>.json.
   var EN={'hero.version':'Version {v}.'}, cur=EN, version=null;
   var nodes=[].slice.call(document.querySelectorAll('[data-i18n]'));
@@ -706,16 +684,6 @@ footer a:hover{color:var(--ink)}
   });
   select.value=window.JARIS_LANG||'en';
   if(select.value!=='en') setLang(select.value);
-
-  // Lien direct vers le dernier installateur publié sur GitHub (sinon, la page des versions).
-  fetch('https://api.github.com/repos/Leo6432/jaris/releases/latest')
-    .then(function(r){return r.ok?r.json():null;})
-    .then(function(rel){
-      if(!rel) return;
-      var exe=(rel.assets||[]).filter(function(a){return /\.exe$/i.test(a.name);})[0];
-      if(exe) document.querySelectorAll('[data-dl]').forEach(function(a){a.href=exe.browser_download_url;});
-      if(rel.tag_name){version=rel.tag_name.replace(/^v/,''); showVersion();}
-    }).catch(function(){});
 })();
 </script>
 </body>
