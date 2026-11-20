@@ -52,6 +52,9 @@ p{margin:0}
 .wrap{width:min(var(--wrap),100% - 2.5rem);margin-inline:auto}
 html.i18n-wait body{visibility:hidden}
 h1,h2,h3,th,td,li,.btn{overflow-wrap:break-word}
+body::before,body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none}
+body::before{background:radial-gradient(62% 58% at 10% 0%,rgba(14,84,90,.55),transparent 72%),radial-gradient(48% 42% at 100% 100%,rgba(8,62,58,.4),transparent 72%)}
+body::after{background-image:radial-gradient(rgba(255,255,255,.085) 1px,transparent 1.5px);background-size:12px 12px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
 
 /* Barre du haut */
@@ -83,11 +86,12 @@ h1,h2,h3,th,td,li,.btn{overflow-wrap:break-word}
 .hero{text-align:center;padding:clamp(1.5rem,5vh,3.5rem) 0 clamp(4rem,9vh,6.5rem);position:relative}
 .hero::before{content:"";position:absolute;left:50%;top:0;width:min(900px,140vw);aspect-ratio:1;transform:translate(-50%,-22%);background:radial-gradient(closest-side,rgba(53,243,228,.13),transparent 70%);pointer-events:none}
 #orb{display:block;margin:0 auto;width:min(74vw,400px);height:min(74vw,400px);position:relative;animation:arrive 1.4s cubic-bezier(.2,.7,.2,1) both}
+.hero h1::after{content:".";color:var(--cyan)}
 .hero h1{font-size:clamp(4.5rem,13vw,9.5rem);letter-spacing:-.045em;line-height:.9;margin-top:-.1em;animation:rise .9s .35s cubic-bezier(.2,.7,.2,1) both}
 .tagline{font-family:var(--display);font-weight:500;font-size:clamp(1.3rem,3.2vw,2rem);line-height:1.25;margin-top:1.1rem;color:var(--ink);animation:rise .9s .5s cubic-bezier(.2,.7,.2,1) both}
 .hero .lead{max-width:34rem;margin:1rem auto 0;color:var(--soft);animation:rise .9s .6s cubic-bezier(.2,.7,.2,1) both}
 .hero .cta{margin-top:2.2rem;animation:rise .9s .7s cubic-bezier(.2,.7,.2,1) both}
-.hero .under{margin-top:1rem;color:var(--muted);font-size:.92rem}
+.hero .under{display:inline-block;margin-top:1.4rem;color:#8ff0e6;font-size:.95rem;border:1px solid #1f5c58;background:rgba(53,243,228,.05);border-radius:999px;padding:.5rem 1.15rem}
 @keyframes arrive{from{opacity:0;transform:scale(.86)}to{opacity:1;transform:none}}
 @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 
@@ -110,7 +114,7 @@ h1,h2,h3,th,td,li,.btn{overflow-wrap:break-word}
 .slot code{display:block;margin-top:.35rem;color:var(--cyan);font-family:ui-monospace,Consolas,monospace;font-size:.85rem}
 .slot svg{width:34px;height:34px;margin:0 auto .7rem;display:block;color:#3b6f72}
 .slot.filled{border:1px solid var(--line);padding:0;display:block;cursor:zoom-in}
-.slot.video.filled{cursor:auto;background:#000}
+.slot.video.filled{cursor:auto;background:#000;border-color:#1c3f40;box-shadow:0 30px 80px rgba(0,0,0,.65),0 0 70px rgba(53,243,228,.08)}
 .slot img,.slot video{display:block;width:100%;height:100%;object-fit:cover}
 .video{aspect-ratio:16/9;margin-top:2.5rem}
 .shots{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1rem}
@@ -128,7 +132,14 @@ h1,h2,h3,th,td,li,.btn{overflow-wrap:break-word}
 .feature .txt p{color:var(--soft);margin-top:1rem;max-width:30rem}
 .feature ul{list-style:none;padding:0;margin:1.4rem 0 0;display:flex;flex-wrap:wrap;gap:.5rem}
 .feature li{border:1px solid #1f3d40;color:#c9f7f3;border-radius:999px;padding:.35rem .85rem;font-size:.9rem}
-.art{background:var(--panel);border:1px solid var(--line);border-radius:22px;min-height:340px;padding:clamp(1.2rem,3vw,2rem);display:grid;align-content:center;gap:.9rem;position:relative;overflow:hidden}
+.shot{position:relative;aspect-ratio:1208/833;overflow:hidden;border-radius:18px;border:1px solid #1c3f40;background:#000;box-shadow:0 30px 80px rgba(0,0,0,.65),0 0 70px rgba(53,243,228,.08)}
+.shot img{position:absolute;left:-65.56%;top:-17.65%;width:165.56%;max-width:none;height:auto}
+@media (min-width:861px){
+  .feature.has-shot{grid-template-columns:.8fr 1.2fr}
+  .feature.has-shot:nth-of-type(even){grid-template-columns:1.2fr .8fr}
+  .feature.has-shot:nth-of-type(even) .shot{order:-1}
+}
+.art{background:rgba(3,9,10,.78);border:1px solid #152c2d;border-radius:22px;min-height:340px;padding:clamp(1.2rem,3vw,2rem);display:grid;align-content:center;gap:.9rem;position:relative;overflow:hidden}
 
 /* Illustrations */
 .said{justify-self:end;color:var(--soft);font-size:.95rem;display:flex;align-items:center;gap:.6rem}
@@ -356,13 +367,6 @@ footer a:hover{color:var(--ink)}
     <div class="slot video filled">
       <video controls playsinline preload="metadata" poster="captures/vocal.webp" src="captures/demo.mp4"></video>
     </div>
-
-    <!-- Captures d'écran : un clic ouvre l'image entière. -->
-    <div class="shots">
-      <a class="slot crop filled" href="captures/vocal.webp" target="_blank" rel="noopener" style="--x:-77.75%;--y:-80.65%" data-i18n-alt="demo.alt.voice" data-alt="Jaris in voice mode, with its orb"><img src="captures/vocal.webp" alt="Jaris in voice mode, with its orb" loading="lazy"></a>
-      <a class="slot crop filled" href="captures/image.webp" target="_blank" rel="noopener" style="--x:-90.62%;--y:-84.79%" data-i18n-alt="media.image" data-alt="Image"><img src="captures/image.webp" alt="Image" loading="lazy"></a>
-      <a class="slot crop filled" href="captures/video.webp" target="_blank" rel="noopener" style="--x:-90.62%;--y:-84.56%" data-i18n-alt="media.video" data-alt="Video"><img src="captures/video.webp" alt="Video" loading="lazy"></a>
-    </div>
   </div>
 </section>
 
@@ -371,7 +375,7 @@ footer a:hover{color:var(--ink)}
     <h2 data-i18n="feat.title">What Jaris can do</h2>
     <p class="intro" data-i18n="feat.intro">One assistant to talk, write, create and remember. Everything happens on your machine.</p>
 
-    <article class="feature">
+    <article class="feature has-shot">
       <div class="txt">
         <h3 data-i18n="voice.t">You talk, it does</h3>
         <p data-i18n="voice.p">Say “Jaris” or click the orb, then just talk. It answers out loud and takes care of what you ask on your PC.</p>
@@ -379,34 +383,15 @@ footer a:hover{color:var(--ink)}
           <li data-i18n="voice.c1">Open an app</li><li data-i18n="voice.c2">Write a text</li><li data-i18n="voice.c3">Set a reminder</li><li data-i18n="voice.c4">Search the web</li><li data-i18n="voice.c5">Look at your screen</li>
         </ul>
       </div>
-      <div class="art" aria-hidden="true">
-        <div class="said"><i><b></b><b></b><b></b><b></b></i><span data-i18n="voice.said">“Jaris, remind me to call the garage at 5 pm”</span></div>
-        <div class="widget">
-          <header><canvas class="mini"></canvas><strong data-i18n="voice.header">Jaris is answering</strong><span><b></b><b></b><b></b><b></b><b></b><b></b></span></header>
-          <p data-i18n="voice.reply">Got it, I'll remind you at 5 pm.</p>
-        </div>
-        <div class="did"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 8.5 3.2 3L13 4.5"/></svg><span data-i18n="voice.done">Reminder created</span></div>
-      </div>
+      <div class="shot" data-i18n-alt="demo.alt.voice" data-alt="Jaris in voice mode, with its orb"><img src="captures/app-voice.webp" alt="Jaris in voice mode, with its orb" loading="lazy"></div>
     </article>
 
-    <article class="feature">
+    <article class="feature has-shot">
       <div class="txt">
         <h3 data-i18n="chat.t">Write to it like you would to ChatGPT</h3>
         <p data-i18n="chat.p">Ask your questions in writing, keep several conversations going and come back to them later. If you know ChatGPT, you'll feel at home.</p>
       </div>
-      <div class="art chat" aria-hidden="true">
-        <aside>
-          <span class="on" data-i18n="chat.s1">Shopping list</span>
-          <span data-i18n="chat.s2">Compare 3 phone plans</span>
-          <span data-i18n="chat.s3">Gift ideas</span>
-          <span data-i18n="chat.s4">Letter to the landlord</span>
-        </aside>
-        <div class="msgs">
-          <div class="bub me" data-i18n="chat.me">Make me a shopping list for the week</div>
-          <div class="bub j" data-i18n="chat.j">Here's a list sorted by aisle. Want me to add breakfast?</div>
-          <div class="field" data-i18n="chat.field">Write to Jaris…</div>
-        </div>
-      </div>
+      <div class="shot" data-i18n-alt="demo.alt.chat" data-alt="Written conversations in Jaris"><img src="captures/app-chat.webp" alt="Written conversations in Jaris" loading="lazy"></div>
     </article>
 
     <article class="feature">
@@ -428,31 +413,12 @@ footer a:hover{color:var(--ink)}
       </div>
     </article>
 
-    <article class="feature">
+    <article class="feature has-shot">
       <div class="txt">
         <h3 data-i18n="media.t">Images and videos, made at home</h3>
         <p data-i18n="media.p">Describe what you want to see: Jaris generates the image, or a short video. Here too, everything is made by your PC and nothing is sent anywhere.</p>
       </div>
-      <div class="art media" aria-hidden="true">
-        <div class="frame">
-          <svg viewBox="0 0 200 140">
-            <rect width="200" height="140" fill="#021a1c"/>
-            <circle cx="140" cy="48" r="20" fill="#35f3e4"/>
-            <path d="M0 100 50 62l34 24 36-34 80 58v30H0z" fill="#0b4a4d"/>
-            <path d="M0 118 60 92l50 22 40-14 50 20v20H0z" fill="#06292b"/>
-          </svg>
-          <small data-i18n="media.image">Image</small>
-        </div>
-        <div class="frame">
-          <svg viewBox="0 0 160 140">
-            <rect width="160" height="140" fill="#04100f"/>
-            <circle cx="80" cy="64" r="24" fill="none" stroke="#35f3e4" stroke-width="2"/>
-            <path d="M73 52v24l20-12z" fill="#35f3e4"/>
-          </svg>
-          <small data-i18n="media.video">Video</small>
-          <div class="bar"></div>
-        </div>
-      </div>
+      <div class="shot" data-i18n-alt="media.image" data-alt="Image"><img src="captures/app-image.webp" alt="Image" loading="lazy"></div>
     </article>
 
     <article class="feature">
@@ -468,16 +434,12 @@ footer a:hover{color:var(--ink)}
       </div>
     </article>
 
-    <article class="feature">
+    <article class="feature has-shot">
       <div class="txt">
         <h3 data-i18n="duel.t">It picks the best AIs for your machine</h3>
         <p data-i18n="duel.p">With Duels, two AI models answer the same question without you knowing which is which. You vote for the answer you prefer, and Jaris keeps the winners.</p>
       </div>
-      <div class="art duel" aria-hidden="true">
-        <div class="card win"><strong data-i18n="duel.a">Answer A</strong><i></i><i></i><i></i><span data-i18n="duel.voted">Your vote</span></div>
-        <div class="vs" data-i18n="duel.vs">vs</div>
-        <div class="card"><strong data-i18n="duel.b">Answer B</strong><i></i><i></i><i></i><span data-i18n="duel.vote">Vote</span></div>
-      </div>
+      <div class="shot" data-i18n-alt="duel.t" data-alt="It picks the best AIs for your machine"><img src="captures/app-duel.webp" alt="It picks the best AIs for your machine" loading="lazy"></div>
     </article>
 
     <article class="feature">
